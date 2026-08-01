@@ -84,7 +84,10 @@ subprojects {
 		archivesName.set("$modNameStripped-${project.name}")
 	}
 	
-	tasks.withType<JavaCompile> {
+	// Only feed the shared root sources into the main compile task. Applying this to all
+	// JavaCompile tasks (including compileTestJava) makes Gradle 9 treat the main sources as
+	// test sources and then fail because no @Test methods are discovered.
+	tasks.named<JavaCompile>("compileJava") {
 		source({ rootProject.sourceSets.main.get().allSource })
 	}
 	

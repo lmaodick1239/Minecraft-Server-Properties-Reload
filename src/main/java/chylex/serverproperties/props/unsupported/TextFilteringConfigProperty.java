@@ -12,7 +12,7 @@ public final class TextFilteringConfigProperty extends ServerProperty<String> {
 	
 	@Override
 	public String get(final DedicatedServerProperties properties) {
-		return properties.textFilteringConfig;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

@@ -1,25 +1,22 @@
-package chylex.serverproperties.props.supported;
+package chylex.serverproperties.props.unsupported;
 import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.ServerProperty;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 
-public final class MotdProperty extends ServerProperty<String> {
-	public static final MotdProperty INSTANCE = new MotdProperty();
+public final class ResourcePackSha1Property extends ServerProperty<String> {
+	public static final ResourcePackSha1Property INSTANCE = new ResourcePackSha1Property();
 	
-	private MotdProperty() {}
+	private ResourcePackSha1Property() {}
 	
 	@Override
 	public String get(final DedicatedServerProperties properties) {
-		return properties.motd.get();
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override
 	public void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final String value, final PropertyChangeCallback callback) {
-		target.setMotd(value);
-		server.setMotd(value);
-		// server.getStatus().setDescription(Component.literal(value)); // Method signature changed in 26.2
+		throw new UnsupportedOperationException();
 	}
 }

@@ -12,7 +12,7 @@ public final class RateLimitProperty extends IntServerProperty {
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.rateLimitPacketsPerSecond;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

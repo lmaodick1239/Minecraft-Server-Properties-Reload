@@ -12,7 +12,7 @@ public final class HideOnlinePlayersProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.hideOnlinePlayers;
+		return properties.hideOnlinePlayers.get();
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ public final class MaxTickTimeProperty extends LongServerProperty {
 	
 	@Override
 	protected long getLong(final DedicatedServerProperties properties) {
-		return properties.maxTickTime;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

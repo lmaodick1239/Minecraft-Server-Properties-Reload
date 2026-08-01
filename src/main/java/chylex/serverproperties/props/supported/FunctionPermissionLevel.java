@@ -12,7 +12,7 @@ public final class FunctionPermissionLevel extends IntServerProperty {
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.functionPermissionLevel;
+		return properties.functionPermissionLevel.get();
 	}
 	
 	@Override

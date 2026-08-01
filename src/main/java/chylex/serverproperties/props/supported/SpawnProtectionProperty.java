@@ -12,7 +12,7 @@ public final class SpawnProtectionProperty extends IntServerProperty {
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.spawnProtection;
+		return properties.spawnProtection.get();
 	}
 	
 	@Override

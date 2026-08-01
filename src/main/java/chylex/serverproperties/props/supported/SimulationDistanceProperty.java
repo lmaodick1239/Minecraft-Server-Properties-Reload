@@ -12,7 +12,7 @@ public final class SimulationDistanceProperty extends IntServerProperty {
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.simulationDistance;
+		return properties.simulationDistance.get();
 	}
 	
 	@Override

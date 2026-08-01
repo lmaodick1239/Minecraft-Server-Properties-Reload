@@ -17,70 +17,42 @@ val mixinVersion: String by project
 val modNameStripped = modName.replace(" ", "")
 val jarVersion = "$minecraftVersion+v$modVersion"
 
-buildscript {
-	repositories {
-		maven("https://repo.spongepowered.org/maven")
-	}
+repositories {
+	maven("https://repo.spongepowered.org/repository/maven-public/")
+	mavenCentral()
 }
 
 plugins {
 	`java-library`
 	idea
-	id("org.spongepowered.gradle.vanilla") version "0.2.1-SNAPSHOT"
-}
-
-idea {
-	module {
-		excludeDirs.add(file("gradle"))
-		excludeDirs.add(file("run"))
-		
-		if (findProject(":Forge") == null) {
-			excludeDirs.add(file("Forge"))
-		}
-		
-		if (findProject(":Fabric") == null) {
-			excludeDirs.add(file("Fabric"))
-		}
-	}
-}
-
-repositories {
-	maven("https://repo.spongepowered.org/maven")
-	mavenCentral()
 }
 
 dependencies {
-	implementation("org.spongepowered:mixin:$mixinVersion")
 	api("com.google.code.findbugs:jsr305:3.0.2")
+	implementation("org.jetbrains:annotations:22.0.0")
+}
+
+// Root project is just a source container - subprojects compile the sources
+tasks.withType<JavaCompile> {
+	enabled = false
 }
 
 base {
 	archivesName.set("$modNameStripped-Common")
 }
 
-minecraft {
-	version(minecraftVersion)
-	runs.clear()
+extensions.getByType<JavaPluginExtension>().apply {
+	toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+}
+
+tasks.withType<JavaCompile> {
+	options.encoding = "UTF-8"
+	options.release.set(25)
 }
 
 allprojects {
 	group = "com.$modAuthor.$modId"
 	version = modVersion
-	
-	apply(plugin = "java")
-	
-	dependencies {
-		implementation("org.jetbrains:annotations:22.0.0")
-	}
-	
-	extensions.getByType<JavaPluginExtension>().apply {
-		toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-	}
-	
-	tasks.withType<JavaCompile> {
-		options.encoding = "UTF-8"
-		options.release.set(17)
-	}
 }
 
 subprojects {
@@ -88,8 +60,24 @@ subprojects {
 		maven("https://repo.spongepowered.org/maven")
 	}
 	
+	// Only apply java plugin if Loom isn't present (Loom provides its own java plugin)
+	if (!plugins.hasPlugin("net.fabricmc.fabric-loom")) {
+		apply(plugin = "java")
+	}
+	
 	dependencies {
-		implementation(rootProject)
+		implementation("org.jetbrains:annotations:22.0.0")
+	}
+	
+	plugins.withType<JavaPlugin> {
+		extensions.getByType<JavaPluginExtension>().apply {
+			toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+		}
+	}
+	
+	tasks.withType<JavaCompile> {
+		options.encoding = "UTF-8"
+		options.release.set(25)
 	}
 	
 	base {
@@ -135,7 +123,7 @@ subprojects {
 tasks.register("setupIdea") {
 	group = "mod"
 	
-	dependsOn(tasks.findByName("decompile"))
+	tasks.findByName("decompile")?.let { dependsOn(it) }
 	
 	val forge = findProject(":Forge")
 	if (forge != null) {
@@ -157,7 +145,7 @@ val copyJars = tasks.register<Copy>("copyJars") {
 		from(subproject.base.libsDirectory.file("${subproject.base.archivesName.get()}-$jarVersion.jar"))
 	}
 	
-	into(file("${project.buildDir}/dist"))
+	into(layout.buildDirectory.dir("dist"))
 }
 
 tasks.assemble {

@@ -12,7 +12,7 @@ public final class SpawnNpcsProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.spawnNpcs;
+		return properties.spawnNpcs.get();
 	}
 	
 	@Override

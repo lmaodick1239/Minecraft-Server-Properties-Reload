@@ -1,37 +1,33 @@
 val modId: String by project
 val minecraftVersion: String by project
+val loaderVersion: String by project
 val fabricVersion: String by project
+val mixinVersion: String by project
 
 plugins {
 	idea
-	id("fabric-loom") version "0.10-SNAPSHOT"
+	id("net.fabricmc.fabric-loom") version "1.17-SNAPSHOT"
 }
 
 dependencies {
 	minecraft("com.mojang:minecraft:$minecraftVersion")
-	modImplementation("net.fabricmc:fabric-loader:$fabricVersion")
-	mappings(loom.officialMojangMappings())
+	// Minecraft 26.1+ ships unobfuscated with parameter names, so no mappings are required.
+	implementation("net.fabricmc:fabric-loader:$loaderVersion")
+	implementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
+	implementation("org.spongepowered:mixin:$mixinVersion")
 }
 
 loom {
 	runs {
 		named("client") {
-			configName = "Fabric Client"
 			client()
-			runDir("../run")
-			ideConfigGenerated(true)
+			runDir = "../run"
 		}
 		
 		named("server") {
-			configName = "Fabric Server"
 			server()
-			runDir("../run")
-			ideConfigGenerated(true)
+			runDir = "../run"
 		}
-	}
-	
-	mixin {
-		add(sourceSets.main.get(), "$modId.refmap.json")
 	}
 }
 
@@ -39,8 +35,4 @@ tasks.processResources {
 	filesMatching("fabric.mod.json") {
 		expand(inputs.properties)
 	}
-}
-
-tasks.remapJar {
-	archiveVersion.set(tasks.jar.get().archiveVersion)
 }

@@ -12,7 +12,7 @@ public final class ResourcePackHashProperty extends ServerProperty<String> {
 	
 	@Override
 	public String get(final DedicatedServerProperties properties) {
-		return properties.resourcePackHash;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

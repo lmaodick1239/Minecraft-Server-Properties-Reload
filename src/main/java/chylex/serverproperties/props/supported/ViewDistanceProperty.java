@@ -12,7 +12,7 @@ public final class ViewDistanceProperty extends IntServerProperty {
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.viewDistance;
+		return properties.viewDistance.get();
 	}
 	
 	@Override

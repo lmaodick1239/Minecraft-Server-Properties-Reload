@@ -18,6 +18,6 @@ public final class ResourcePackProperty extends ServerProperty<String> {
 	@Override
 	public void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final String value, final PropertyChangeCallback callback) {
 		target.setResourcePack(value);
-		server.setResourcePack(value, server.getResourcePackHash());
+		// server.setResourcePack(value, server.getResourcePackHash()); // Method removed in 26.2
 	}
 }

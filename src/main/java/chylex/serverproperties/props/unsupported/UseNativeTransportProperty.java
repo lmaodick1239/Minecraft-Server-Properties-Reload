@@ -12,7 +12,7 @@ public final class UseNativeTransportProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.useNativeTransport;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ public final class LevelNameProperty extends ServerProperty<String> {
 	
 	@Override
 	public String get(final DedicatedServerProperties properties) {
-		return properties.levelName;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

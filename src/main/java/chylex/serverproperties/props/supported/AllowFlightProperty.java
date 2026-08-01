@@ -12,12 +12,12 @@ public final class AllowFlightProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.allowFlight;
+		return properties.allowFlight.get();
 	}
 	
 	@Override
 	protected void applyBool(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final boolean value, final PropertyChangeCallback callback) {
 		target.setAllowFlight(value);
-		server.setFlightAllowed(value);
+		// server.setFlightAllowed(value); // Method removed in 26.2
 	}
 }

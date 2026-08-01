@@ -12,7 +12,7 @@ public final class ForceGamemodeProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.forceGameMode;
+		return properties.forceGameMode.get();
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package chylex.serverproperties.props.supported;
+package chylex.serverproperties.props.unsupported;
 import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.IntServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
@@ -12,11 +12,11 @@ public final class OpPermissionLevel extends IntServerProperty {
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.opPermissionLevel.get();
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override
 	protected void applyInt(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final int value, final PropertyChangeCallback callback) {
-		target.setOpPermissionLevel(value);
+		throw new UnsupportedOperationException();
 	}
 }

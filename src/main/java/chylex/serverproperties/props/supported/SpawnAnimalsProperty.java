@@ -13,7 +13,7 @@ public final class SpawnAnimalsProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.spawnAnimals;
+		return properties.spawnAnimals.get();
 	}
 	
 	@SuppressWarnings("CastToIncompatibleInterface")

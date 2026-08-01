@@ -14,7 +14,7 @@ public final class DifficultyProperty extends ServerProperty<Difficulty> {
 	
 	@Override
 	public Difficulty get(final DedicatedServerProperties properties) {
-		return properties.difficulty;
+		return properties.difficulty.get();
 	}
 	
 	@Override

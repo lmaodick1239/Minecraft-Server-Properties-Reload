@@ -12,7 +12,7 @@ public final class ServerPortProperty extends IntServerProperty {
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.serverPort;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

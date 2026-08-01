@@ -12,7 +12,7 @@ public final class EnableStatusProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.enableStatus;
+		return properties.enableStatus.get();
 	}
 	
 	@Override

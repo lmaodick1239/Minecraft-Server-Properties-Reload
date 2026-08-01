@@ -13,7 +13,7 @@ public final class MaxPlayersProperty extends IntServerProperty {
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.maxPlayers;
+		return properties.maxPlayers.get();
 	}
 	
 	@SuppressWarnings("CastToIncompatibleInterface")

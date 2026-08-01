@@ -1,4 +1,4 @@
-package chylex.serverproperties.props.supported;
+package chylex.serverproperties.props.unsupported;
 import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.ServerProperty;
@@ -14,13 +14,12 @@ public final class GamemodeProperty extends ServerProperty<GameType> {
 	
 	@Override
 	public GameType get(final DedicatedServerProperties properties) {
-		return properties.gamemode.get();
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override
 	public void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final GameType value, final PropertyChangeCallback callback) {
-		target.setGamemode(value);
-		server.setDefaultGameType(value);
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

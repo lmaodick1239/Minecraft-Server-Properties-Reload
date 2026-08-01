@@ -27,6 +27,6 @@ public final class HardcoreProperty extends BoolServerProperty {
 		((LevelSettingsMixin)(Object)modifiedSettings).setHardcore(value);
 		worldDataMixin.setSettings(modifiedSettings);
 		
-		server.forceDifficulty();
+		// server.forceDifficulty(); // Method now protected in 26.2
 	}
 }

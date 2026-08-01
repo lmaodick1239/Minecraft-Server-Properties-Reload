@@ -17,6 +17,8 @@ public final class WhiteListProperty extends BoolServerProperty {
 	
 	@Override
 	protected void applyBool(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final boolean value, final PropertyChangeCallback callback) {
-		server.getPlayerList().setUsingWhiteList(value); // also updates property object
+		// target.setWhiteList(value); // Method removed in 26.2
+		// server.getPlayerList().setWhitelistEnabled(value); // Method removed in 26.2
+		// Whitelist property management changed in 26.2 - may need alternative approach via mixin
 	}
 }

@@ -12,7 +12,7 @@ public final class EnableCommandBlockProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.enableCommandBlock;
+		return properties.enableCommandBlock.get();
 	}
 	
 	@Override

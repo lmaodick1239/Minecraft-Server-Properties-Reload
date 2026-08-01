@@ -12,7 +12,7 @@ public final class EntityBroadcastRangePercentageProperty extends IntServerPrope
 	
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		return properties.entityBroadcastRangePercentage;
+		return properties.entityBroadcastRangePercentage.get();
 	}
 	
 	@Override

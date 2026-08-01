@@ -12,7 +12,7 @@ public final class EnforceWhitelistProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.enforceWhitelist;
+		return properties.enforceWhitelist.get();
 	}
 	
 	@Override
@@ -20,7 +20,7 @@ public final class EnforceWhitelistProperty extends BoolServerProperty {
 		target.setEnforceWhitelist(value);
 		server.setEnforceWhitelist(value);
 		if (value) {
-			server.kickUnlistedPlayers(server.createCommandSourceStack());
+			server.kickUnlistedPlayers();
 		}
 	}
 }

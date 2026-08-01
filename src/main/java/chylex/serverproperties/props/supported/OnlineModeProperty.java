@@ -4,7 +4,6 @@ import chylex.serverproperties.props.BoolServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
-import net.minecraft.server.players.GameProfileCache;
 
 public final class OnlineModeProperty extends BoolServerProperty {
 	public static final OnlineModeProperty INSTANCE = new OnlineModeProperty();
@@ -20,6 +19,6 @@ public final class OnlineModeProperty extends BoolServerProperty {
 	protected void applyBool(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final boolean value, final PropertyChangeCallback callback) {
 		target.setOnlineMode(value);
 		server.setUsesAuthentication(value);
-		GameProfileCache.setUsesAuthentication(value);
+		// GameProfileCache.setUsesAuthentication(value); // Class or method removed in 26.2
 	}
 }

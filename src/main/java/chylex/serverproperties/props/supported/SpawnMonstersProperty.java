@@ -13,7 +13,7 @@ public final class SpawnMonstersProperty extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.spawnMonsters;
+		return properties.spawnMonsters.get();
 	}
 	
 	@SuppressWarnings("CastToIncompatibleInterface")

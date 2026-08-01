@@ -1,4 +1,4 @@
-package chylex.serverproperties.props.supported;
+package chylex.serverproperties.props.unsupported;
 import chylex.serverproperties.mixin.DedicatedServerMixin;
 import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.PropertyChangeCallback;
@@ -13,15 +13,11 @@ public final class ResourcePackPromptProperty extends ServerProperty<String> {
 	
 	@Override
 	public String get(final DedicatedServerProperties properties) {
-		return properties.resourcePackPrompt;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override
 	public void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final String value, final PropertyChangeCallback callback) {
-		target.setResourcePackPrompt(value);
-		
-		@SuppressWarnings("CastToIncompatibleInterface")
-		final DedicatedServerMixin serverMixin = (DedicatedServerMixin)server;
-		serverMixin.setResourcePackPrompt(DedicatedServerMixin.callParseResourcePackPrompt(serverMixin.getSettings()));
+		throw new UnsupportedOperationException();
 	}
 }

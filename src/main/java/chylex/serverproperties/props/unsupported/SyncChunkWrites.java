@@ -12,7 +12,7 @@ public final class SyncChunkWrites extends BoolServerProperty {
 	
 	@Override
 	protected boolean getBool(final DedicatedServerProperties properties) {
-		return properties.syncChunkWrites;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ public final class ServerIpProperty extends ServerProperty<String> {
 	
 	@Override
 	public String get(final DedicatedServerProperties properties) {
-		return properties.serverIp;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

@@ -14,7 +14,12 @@ dependencies {
 	// Minecraft 26.1+ ships unobfuscated with parameter names, so no mappings are required.
 	implementation("net.fabricmc:fabric-loader:$loaderVersion")
 	implementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
-	implementation("org.spongepowered:mixin:$mixinVersion")
+	testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+	useJUnitPlatform()
 }
 
 loom {

@@ -1,5 +1,4 @@
-package chylex.serverproperties.props.unsupported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
+package chylex.serverproperties.props.supported;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.ServerProperty;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -9,19 +8,19 @@ import java.util.Locale;
 
 public final class GamemodeProperty extends ServerProperty<GameType> {
 	public static final GamemodeProperty INSTANCE = new GamemodeProperty();
-	
+
 	private GamemodeProperty() {}
-	
+
 	@Override
 	public GameType get(final DedicatedServerProperties properties) {
-		throw new UnsupportedOperationException();
+		return properties.gameMode.get();
 	}
-	
+
 	@Override
-	public void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final GameType value, final PropertyChangeCallback callback) {
-		throw new UnsupportedOperationException();
+	public void apply(final DedicatedServer server, final GameType value, final PropertyChangeCallback callback) {
+		server.setDefaultGameType(value);
 	}
-	
+
 	@Override
 	public String toString(final GameType value) {
 		return super.toString(value).toLowerCase(Locale.ROOT);

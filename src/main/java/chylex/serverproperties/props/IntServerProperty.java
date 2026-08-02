@@ -1,5 +1,4 @@
 package chylex.serverproperties.props;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 
@@ -11,8 +10,8 @@ public abstract class IntServerProperty extends ServerProperty<Integer> {
 	}
 	
 	@Override
-	public final void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final Integer value, final PropertyChangeCallback callback) {
-		applyInt(server, target, value.intValue(), callback);
+	public final void apply(final DedicatedServer server, final Integer value, final PropertyChangeCallback callback) {
+		applyInt(server, value.intValue(), callback);
 	}
 	
 	@Override
@@ -22,5 +21,5 @@ public abstract class IntServerProperty extends ServerProperty<Integer> {
 	
 	protected abstract int getInt(DedicatedServerProperties properties);
 	
-	protected abstract void applyInt(final DedicatedServer server, DedicatedServerPropertiesMixin target, int value, final PropertyChangeCallback callback);
+	protected abstract void applyInt(DedicatedServer server, int value, PropertyChangeCallback callback);
 }

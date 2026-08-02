@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.BoolServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -23,8 +22,7 @@ public final class EnableJmxMonitoringProperty extends BoolServerProperty {
 	}
 	
 	@Override
-	protected void applyBool(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final boolean value, final PropertyChangeCallback callback) {
-		target.setEnableJmxMonitoring(value);
+	protected void applyBool(final DedicatedServer server, final boolean value, final PropertyChangeCallback callback) {
 		
 		try {
 			ManagementFactory.getPlatformMBeanServer().unregisterMBean(new ObjectName("net.minecraft.server:type=Server"));

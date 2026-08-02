@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.ServerProperty;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -18,8 +17,7 @@ public final class DifficultyProperty extends ServerProperty<Difficulty> {
 	}
 	
 	@Override
-	public void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final Difficulty value, final PropertyChangeCallback callback) {
-		target.setDifficulty(value);
+	public void apply(final DedicatedServer server, final Difficulty value, final PropertyChangeCallback callback) {
 		server.setDifficulty(value, true);
 	}
 	

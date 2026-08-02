@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.ServerProperty;
 import chylex.serverproperties.props.finalizers.ReloadRconThread;
@@ -17,8 +16,7 @@ public final class RconPasswordProperty extends ServerProperty<String> {
 	}
 	
 	@Override
-	public void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final String value, final PropertyChangeCallback callback) {
-		target.setRconPassword(value);
+	public void apply(final DedicatedServer server, final String value, final PropertyChangeCallback callback) {
 		callback.addFinalizer(new ReloadRconThread());
 	}
 }

@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.BoolServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -16,7 +15,6 @@ public final class ForceGamemodeProperty extends BoolServerProperty {
 	}
 	
 	@Override
-	protected void applyBool(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final boolean value, final PropertyChangeCallback callback) {
-		target.setForceGameMode(value);
+	protected void applyBool(final DedicatedServer server, final boolean value, final PropertyChangeCallback callback) {
 	}
 }

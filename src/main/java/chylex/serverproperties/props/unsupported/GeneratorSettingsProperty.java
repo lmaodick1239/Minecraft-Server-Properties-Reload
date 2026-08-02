@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.unsupported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.mixin.SettingsMixin;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.ServerProperty;
@@ -18,7 +17,7 @@ public final class GeneratorSettingsProperty extends ServerProperty<String> {
 	}
 	
 	@Override
-	public void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final String value, final PropertyChangeCallback callback) {
+	public void apply(final DedicatedServer server, final String value, final PropertyChangeCallback callback) {
 		throw new UnsupportedOperationException();
 	}
 }

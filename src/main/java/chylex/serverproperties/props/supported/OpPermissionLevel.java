@@ -1,5 +1,4 @@
-package chylex.serverproperties.props.unsupported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
+package chylex.serverproperties.props.supported;
 import chylex.serverproperties.props.IntServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -7,16 +6,14 @@ import net.minecraft.server.dedicated.DedicatedServerProperties;
 
 public final class OpPermissionLevel extends IntServerProperty {
 	public static final OpPermissionLevel INSTANCE = new OpPermissionLevel();
-	
+
 	private OpPermissionLevel() {}
-	
+
 	@Override
 	protected int getInt(final DedicatedServerProperties properties) {
-		throw new UnsupportedOperationException();
+		return properties.opPermissions.get().level().id();
 	}
-	
+
 	@Override
-	protected void applyInt(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final int value, final PropertyChangeCallback callback) {
-		throw new UnsupportedOperationException();
-	}
+	protected void applyInt(final DedicatedServer server, final int value, final PropertyChangeCallback callback) {}
 }

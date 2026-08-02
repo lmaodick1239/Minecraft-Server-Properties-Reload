@@ -1,25 +1,29 @@
 package chylex.serverproperties.command;
 
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
+import chylex.serverproperties.mixin.DedicatedServerMixin;
+import chylex.serverproperties.mixin.DedicatedServerSettingsMixin;
 import chylex.serverproperties.mixin.SettingsMixin;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.PropertyChangeFinalizer;
+import chylex.serverproperties.props.GameRuleBooleanProperty;
 import chylex.serverproperties.props.ServerProperties;
 import chylex.serverproperties.props.ServerProperty;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
+import net.minecraft.server.permissions.PermissionSet;
+import net.minecraft.server.permissions.Permissions;
 import org.apache.logging.log4j.LogManager;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
 import static net.minecraft.commands.Commands.literal;
 
@@ -28,13 +32,16 @@ public final class PropertiesCommand {
 	
 	public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(literal("properties")
-			// .requires(s -> s.getPermissionLevel() >= 2) // TODO: Fix permission check for 26.2
+			.requires(source -> canReloadProperties(source.permissions()))
 			.then(literal("reload")
 				.executes(c -> reloadPropertiesFile(c.getSource())))
 		);
 	}
+
+	static boolean canReloadProperties(final PermissionSet permissions) {
+		return permissions.hasPermission(Permissions.COMMANDS_ADMIN);
+	}
 	
-	@SuppressWarnings("CastToIncompatibleInterface")
 	private static int reloadPropertiesFile(final CommandSourceStack s) {
 		final MinecraftServer server = s.getServer();
 		
@@ -51,9 +58,11 @@ public final class PropertiesCommand {
 		
 		int reloadedProperties = 0;
 		int failedProperties = 0;
+		final Set<String> appliedPropertyNames = new HashSet<>();
 		
-		final Map<String, PropertyChangeFinalizer> finalizers = new HashMap<>();
+		final Map<String, PropertyChangeFinalizer> finalizers = new LinkedHashMap<>();
 		final PropertyChangeCallback callback = finalizer -> finalizers.putIfAbsent(finalizer.getKey(), finalizer);
+		final Set<String> conflictingPropertyNames = GameRuleBooleanProperty.findConflicts(((SettingsMixin)newProperties).getProperties());
 		
 		// newProperties.getWorldGenSettings(dedicatedServer.registryAccess()); // Method removed in 26.2
 		
@@ -62,6 +71,12 @@ public final class PropertiesCommand {
 			final ServerProperty<?> prop = entry.getValue();
 			
 			unknownPropertyNames.remove(name);
+
+			if (conflictingPropertyNames.contains(name)) {
+				sendReloadUnsupportedMessage(s, name);
+				++failedProperties;
+				continue;
+			}
 			
 			try {
 				if (prop.hasChanged(oldProperties, newProperties)) {
@@ -69,7 +84,8 @@ public final class PropertiesCommand {
 					final String newValue = prop.toStringFrom(newProperties);
 					
 					try {
-						prop.apply(dedicatedServer, newProperties, (DedicatedServerPropertiesMixin)oldProperties, callback);
+						prop.apply(dedicatedServer, newProperties, callback);
+						appliedPropertyNames.add(name);
 						sendReloadSuccessMessage(s, name, oldValue, newValue);
 						++reloadedProperties;
 					} catch (final UnsupportedOperationException e) {
@@ -78,11 +94,23 @@ public final class PropertiesCommand {
 					}
 				}
 			} catch (final Throwable t) {
-				sendReloadErrorMessage(s, name);
-				LogManager.getLogger().error("Caught exception while reloading a property: " + name, t);
+				if (isUnsupported(t)) {
+					sendReloadUnsupportedMessage(s, name);
+				} else {
+					sendReloadErrorMessage(s, name);
+					LogManager.getLogger().error("Caught exception while reloading a property: " + name, t);
+				}
 				++failedProperties;
 			}
 		}
+
+		final Properties mergedProperties = mergeProperties(
+			((SettingsMixin)oldProperties).getProperties(),
+			((SettingsMixin)newProperties).getProperties(),
+			appliedPropertyNames
+		);
+		((DedicatedServerSettingsMixin)((DedicatedServerMixin)dedicatedServer).getSettings())
+			.setProperties(new DedicatedServerProperties(mergedProperties));
 		
 		int finalizerErrors = 0;
 		
@@ -108,6 +136,26 @@ public final class PropertiesCommand {
 		}
 		
 		return reloadedProperties;
+	}
+
+	static boolean isUnsupported(final Throwable throwable) {
+		return throwable instanceof UnsupportedOperationException;
+	}
+
+	static Properties mergeProperties(final Properties oldProperties, final Properties newProperties, final Set<String> appliedPropertyNames) {
+		final Properties merged = new Properties();
+		merged.putAll(oldProperties);
+
+		for (final String name : appliedPropertyNames) {
+			final String value = newProperties.getProperty(name);
+			if (value == null) {
+				merged.remove(name);
+			} else {
+				merged.setProperty(name, value);
+			}
+		}
+
+		return merged;
 	}
 	
 	private static void sendReloadSuccessMessage(final CommandSourceStack s, final String name, final String oldValue, final String newValue) {

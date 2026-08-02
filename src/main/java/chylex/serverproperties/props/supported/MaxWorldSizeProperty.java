@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.IntServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
@@ -19,8 +18,7 @@ public final class MaxWorldSizeProperty extends IntServerProperty {
 	}
 	
 	@Override
-	protected void applyInt(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final int value, final PropertyChangeCallback callback) {
-		target.setMaxWorldSize(value);
+	protected void applyInt(final DedicatedServer server, final int value, final PropertyChangeCallback callback) {
 		for (final ServerLevel level : server.getAllLevels()) {
 			level.getWorldBorder().setAbsoluteMaxSize(value);
 			for (final ServerPlayer player : level.players()) {

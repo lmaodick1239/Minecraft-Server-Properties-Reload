@@ -1,6 +1,5 @@
 package chylex.serverproperties.props;
 
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 import java.util.Objects;
@@ -10,8 +9,8 @@ public abstract class ServerProperty<T> {
 		return !Objects.equals(get(oldProperties), get(newProperties));
 	}
 	
-	public final void apply(final DedicatedServer server, final DedicatedServerProperties source, final DedicatedServerPropertiesMixin target, final PropertyChangeCallback callback) {
-		apply(server, target, get(source), callback);
+	public final void apply(final DedicatedServer server, final DedicatedServerProperties source, final PropertyChangeCallback callback) {
+		apply(server, get(source), callback);
 	}
 	
 	public final String toStringFrom(final DedicatedServerProperties source) {
@@ -20,7 +19,7 @@ public abstract class ServerProperty<T> {
 	
 	public abstract T get(DedicatedServerProperties properties);
 	
-	public abstract void apply(final DedicatedServer server, DedicatedServerPropertiesMixin target, T value, final PropertyChangeCallback callback);
+	public abstract void apply(DedicatedServer server, T value, PropertyChangeCallback callback);
 	
 	public String toString(final T value) {
 		return Objects.toString(value, "<null>");

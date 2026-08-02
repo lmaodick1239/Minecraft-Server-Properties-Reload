@@ -1,6 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
-import chylex.serverproperties.mixin.LevelSettingsMixin;
 import chylex.serverproperties.mixin.PrimaryLevelDataMixin;
 import chylex.serverproperties.props.BoolServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
@@ -19,14 +17,16 @@ public final class HardcoreProperty extends BoolServerProperty {
 	}
 	
 	@Override
-	protected void applyBool(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final boolean value, final PropertyChangeCallback callback) {
-		target.setHardcore(value);
-		
+	protected void applyBool(final DedicatedServer server, final boolean value, final PropertyChangeCallback callback) {
 		final PrimaryLevelDataMixin worldDataMixin = (PrimaryLevelDataMixin)server.getWorldData();
-		final LevelSettings modifiedSettings = worldDataMixin.getSettings().copy();
-		((LevelSettingsMixin)(Object)modifiedSettings).setHardcore(value);
-		worldDataMixin.setSettings(modifiedSettings);
-		
-		// server.forceDifficulty(); // Method now protected in 26.2
+		final LevelSettings settings = worldDataMixin.getSettings();
+		final LevelSettings.DifficultySettings difficulty = settings.difficultySettings();
+		worldDataMixin.setSettings(new LevelSettings(
+			settings.levelName(),
+			settings.gameType(),
+			new LevelSettings.DifficultySettings(difficulty.difficulty(), value, difficulty.locked()),
+			settings.allowCommands(),
+			settings.dataConfiguration()
+		));
 	}
 }

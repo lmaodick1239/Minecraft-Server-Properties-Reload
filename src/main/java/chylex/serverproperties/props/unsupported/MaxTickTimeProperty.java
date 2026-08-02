@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.unsupported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.LongServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -16,7 +15,7 @@ public final class MaxTickTimeProperty extends LongServerProperty {
 	}
 	
 	@Override
-	protected void applyLong(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final long value, final PropertyChangeCallback callback) {
+	protected void applyLong(final DedicatedServer server, final long value, final PropertyChangeCallback callback) {
 		throw new UnsupportedOperationException();
 	}
 }

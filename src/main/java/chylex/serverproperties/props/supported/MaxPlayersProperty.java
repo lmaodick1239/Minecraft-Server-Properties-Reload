@@ -1,6 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
-import chylex.serverproperties.mixin.PlayerListMixin;
 import chylex.serverproperties.props.IntServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -16,10 +14,6 @@ public final class MaxPlayersProperty extends IntServerProperty {
 		return properties.maxPlayers.get();
 	}
 	
-	@SuppressWarnings("CastToIncompatibleInterface")
 	@Override
-	protected void applyInt(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final int value, final PropertyChangeCallback callback) {
-		target.setMaxPlayers(value);
-		((PlayerListMixin)server.getPlayerList()).setMaxPlayers(value);
-	}
+	protected void applyInt(final DedicatedServer server, final int value, final PropertyChangeCallback callback) {}
 }

@@ -44,6 +44,63 @@ mappings block, confirming the approach.
 
 ---
 
+## Restoration plan after git-history review
+
+Git history shows commit `835bc03` deleted 11 classes from `props/supported`, but those classes
+were already dead: commit `864757f` had rewired `ServerProperties` to matching classes under
+`props/unsupported`. Restoring the deleted files verbatim would reintroduce references to fields
+and methods that do not exist in 26.2.
+
+The real restoration target is the 13 properties that were supported in 1.18 and are currently
+registered as unsupported:
+
+- `allow-nether`, `enable-command-block`, `pvp`
+- `spawn-animals`, `spawn-monsters`, `spawn-npcs`
+- `gamemode`, `op-permission-level`, `function-permission-level`
+- `resource-pack`, `resource-pack-sha1`, `require-resource-pack`, `resource-pack-prompt`
+
+Minecraft 26.2 still parses several of these keys, but ownership changed:
+
+- `gamemode` is `gameMode: Settings.MutableValue<GameType>`.
+- Permission levels use `LevelBasedPermissionSet` and `PermissionLevel`.
+- Nether portals, command blocks, PvP, and mob spawning use `GameRules`.
+- Resource-pack components are combined in `Optional<ServerResourcePackInfo>`.
+
+Git/API review also found a broader runtime risk: current supported properties mutate final
+`Settings.MutableValue` fields through old `@Mutable @Accessor` methods. In 26.2 these values are
+immutable wrappers; updates must go through `MutableValue.update(...)` and
+`DedicatedServerSettings.update(...)`. A clean compile passes because Mixin accessor targets are
+validated at server startup, not by `javac`.
+
+Detailed phased implementation and validation plan:
+[`docs/superpowers/plans/2026-08-02-restore-1.18-property-behavior.md`](docs/superpowers/plans/2026-08-02-restore-1.18-property-behavior.md)
+
+### Implementation status (2026-08-02)
+
+Implemented and verified on a live Fabric 26.2 dedicated server:
+
+- Replaced obsolete `DedicatedServerPropertiesMixin` field mutation with atomic active-settings
+   replacement through `DedicatedServerSettingsMixin`.
+- Restored `gamemode`, `op-permission-level`, and `function-permission-level` parsing.
+- Restored `allow-nether`, `enable-command-block`, `pvp`, `spawn-animals`, `spawn-monsters`, and
+   `spawn-npcs` through 26.2 gamerules. `spawn-animals` and `spawn-npcs` share `SPAWN_MOBS` because
+   26.2 no longer exposes independent runtime switches; reload rejects both keys as unsupported
+   when their requested values differ instead of applying an order-dependent result.
+- Restored composite resource-pack URL, SHA-1, required flag, and prompt handling. Connected
+   players receive pop/push packets after a successful reload.
+- Restored command authorization with `Permissions.COMMANDS_ADMIN`.
+- Migrated hardcore, max-player, and command-constructor paths away from invalid 1.18 mixins.
+- Removed the duplicate standalone Sponge Mixin dependency that conflicted with Fabric Loader's
+   Mixin 0.8.7 runtime.
+- Unsupported properties now report `cannot be reloaded (unsupported)` without error stack traces.
+
+Verification evidence:
+
+- `./gradlew :Fabric:test :Fabric:build --no-daemon` succeeds.
+- Dedicated server reaches `Done` with all mixins applied.
+- Live reload changed gamerule-backed `pvp` and direct settings-backed properties.
+- Server shuts down cleanly after reload.
+
 ## ⚠️ REMAINING WORK: DedicatedServerProperties API changed substantially
 
 With the build unblocked, the compiler now reports the real 26.2 API differences. The migration

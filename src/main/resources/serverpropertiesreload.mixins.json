@@ -7,10 +7,7 @@
   "server": [
     "CommandMixin",
     "DedicatedServerMixin",
-    "DedicatedServerPropertiesMixin",
-    "LevelSettingsMixin",
-    "MinecraftServerMixin",
-    "PlayerListMixin",
+    "DedicatedServerSettingsMixin",
     "PrimaryLevelDataMixin",
     "SettingsMixin"
   ],

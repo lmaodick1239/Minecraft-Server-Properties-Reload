@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.unsupported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.IntServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -16,7 +15,7 @@ public final class RateLimitProperty extends IntServerProperty {
 	}
 	
 	@Override
-	protected void applyInt(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final int value, final PropertyChangeCallback callback) {
+	protected void applyInt(final DedicatedServer server, final int value, final PropertyChangeCallback callback) {
 		throw new UnsupportedOperationException();
 	}
 }

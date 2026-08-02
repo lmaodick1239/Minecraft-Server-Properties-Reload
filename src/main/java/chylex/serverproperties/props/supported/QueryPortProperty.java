@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.IntServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.finalizers.ReloadQueryThread;
@@ -17,8 +16,7 @@ public final class QueryPortProperty extends IntServerProperty {
 	}
 	
 	@Override
-	protected void applyInt(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final int value, final PropertyChangeCallback callback) {
-		target.setQueryPort(value);
+	protected void applyInt(final DedicatedServer server, final int value, final PropertyChangeCallback callback) {
 		callback.addFinalizer(new ReloadQueryThread());
 	}
 }

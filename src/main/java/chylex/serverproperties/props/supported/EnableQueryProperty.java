@@ -1,5 +1,4 @@
 package chylex.serverproperties.props.supported;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import chylex.serverproperties.props.BoolServerProperty;
 import chylex.serverproperties.props.PropertyChangeCallback;
 import chylex.serverproperties.props.finalizers.ReloadQueryThread;
@@ -17,8 +16,7 @@ public final class EnableQueryProperty extends BoolServerProperty {
 	}
 	
 	@Override
-	protected void applyBool(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final boolean value, final PropertyChangeCallback callback) {
-		target.setEnableQuery(value);
+	protected void applyBool(final DedicatedServer server, final boolean value, final PropertyChangeCallback callback) {
 		callback.addFinalizer(new ReloadQueryThread());
 	}
 }

@@ -1,5 +1,4 @@
 package chylex.serverproperties.props;
-import chylex.serverproperties.mixin.DedicatedServerPropertiesMixin;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 
@@ -11,8 +10,8 @@ public abstract class LongServerProperty extends ServerProperty<Long> {
 	}
 	
 	@Override
-	public final void apply(final DedicatedServer server, final DedicatedServerPropertiesMixin target, final Long value, final PropertyChangeCallback callback) {
-		applyLong(server, target, value.longValue(), callback);
+	public final void apply(final DedicatedServer server, final Long value, final PropertyChangeCallback callback) {
+		applyLong(server, value.longValue(), callback);
 	}
 	
 	@Override
@@ -22,5 +21,5 @@ public abstract class LongServerProperty extends ServerProperty<Long> {
 	
 	protected abstract long getLong(DedicatedServerProperties properties);
 	
-	protected abstract void applyLong(final DedicatedServer server, DedicatedServerPropertiesMixin target, long value, final PropertyChangeCallback callback);
+	protected abstract void applyLong(DedicatedServer server, long value, PropertyChangeCallback callback);
 }
